@@ -1,0 +1,27 @@
+---
+import keystaticConfig from "keystatic.config";
+import { createReader } from "@keystatic/core/reader";
+
+export async function getStaticPaths() {
+  const reader = createReader(process.cwd(), keystaticConfig);
+  const links = await reader.collections.links.all();
+
+  return links
+    .filter((link: any) => link.entry.active)
+    .map((link: any) => ({
+      params: { slug: link.slug },
+      props: { link: link.entry },
+    }));
+}
+
+const { slug } = Astro.params;
+
+const reader = createReader(process.cwd(), keystaticConfig);
+const link = await reader.collections.links.read(slug);
+
+if (!link || !link.active) {
+  return Astro.redirect("/404", 404);
+}
+
+return Astro.redirect(link.redirect, 301);
+---
