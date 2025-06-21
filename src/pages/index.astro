@@ -1,17 +1,22 @@
 ---
+import Layout from "@/layout/main.astro";
 
+import { createReader } from "@keystatic/core/reader";
+import keystaticConfig from "keystatic.config";
+
+const reader = createReader(process.cwd(), keystaticConfig);
+const settings = await reader.singletons.settings.read();
+
+if (settings && settings.root) {
+  return Astro.redirect(settings.root, 302);
+}
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Shortastic</title>
-  </head>
-  <body>
+<Layout title="Shortastic">
+  <div class="container">
     <h1>Shortastic</h1>
-    <p>by <a href="https://xzit.dev">Xzit</a></p>
-  </body>
-</html>
+    <p>Astro + Keystatic URL Shortener</p>
+    <a href="https://github.com/xzit/shortastic" class="button">Get Started →</a
+    >
+  </div>
+</Layout>

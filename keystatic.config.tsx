@@ -1,4 +1,4 @@
-import { config, fields, collection } from "@keystatic/core";
+import { config, fields, collection, singleton } from "@keystatic/core";
 
 import { customAlphabet } from "nanoid";
 
@@ -19,13 +19,29 @@ export default config({
       schema: {
         title: fields.slug({
           name: { label: "Title" },
-          slug: { generate: () => nanoid() },
+          slug: { label: "URL Shortener", generate: () => nanoid() },
         }),
         redirect: fields.url({
           label: "Redirect",
           validation: { isRequired: true },
         }),
         active: fields.checkbox({ label: "Active", defaultValue: true }),
+      },
+    }),
+  },
+  singletons: {
+    settings: singleton({
+      label: "Settings",
+      path: "src/content/settings",
+      schema: {
+        root: fields.url({
+          label: "Root",
+          description: "Redirect visitors from / to a custom URL",
+        }),
+        error: fields.url({
+          label: "404",
+          description: "Redirect users from the 404 page to a custom URL",
+        }),
       },
     }),
   },

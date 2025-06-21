@@ -1,13 +1,20 @@
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>404: Not Found</title>
-  </head>
-  <body>
-    <h1>404: Not Found</h1>
-    <p>Page not found</p>
-  </body>
-</html>
+---
+import Layout from "@/layout/main.astro";
+
+import { createReader } from "@keystatic/core/reader";
+import keystaticConfig from "keystatic.config";
+
+const reader = createReader(process.cwd(), keystaticConfig);
+const settings = await reader.singletons.settings.read();
+
+if (settings && settings.error) {
+  return Astro.redirect(settings.error, 302);
+}
+---
+
+<Layout title="404 Not Found">
+  <div class="container">
+    <h1>404 Not Found</h1>
+    <p>This page could not be found.</p>
+  </div>
+</Layout>
