@@ -5,6 +5,7 @@ pnpm-lock.yaml
 
 # generated types
 .astro/
+.vercel/
 
 # dependencies
 node_modules/
